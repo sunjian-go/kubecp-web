@@ -473,12 +473,15 @@
       </div>
     </div>
     <template #footer>
-      <span class="dialog-footer">
-        <!-- <el-button @click="jindustatus = false">Cancel</el-button>
+      <div style="text-align: center;">
+        <span  @click="history_dialog = true;jindustatus=false" style="cursor: pointer;color: rgb(63, 111, 245);font-size: 13px;">
+          <!-- <el-button @click="jindustatus = false">Cancel</el-button>
         <el-button type="primary" @click="jindustatus = false">
           Confirm
         </el-button> -->
-      </span>
+          查看更多
+        </span>
+      </div>
     </template>
   </el-dialog>
   <!-- 命令行dialog -->
@@ -545,6 +548,36 @@
       </div>
     </template>
   </el-dialog>
+  <el-dialog
+    v-model="history_dialog"
+    title="上传历史记录"
+    width="80%"
+    style="
+      height: 800px;
+      border-radius: 15px;
+      margin-left: 15%;
+      margin-top: 50px;
+    "
+    :before-close="xxx"
+    :close-on-click-modal="false"
+    :draggable="true"
+  >
+    <div>
+      <div style="height: 630px">history</div>
+    </div>
+    <template #footer>
+      <div style="text-align: center">
+        <el-button
+          @click="
+            history_dialog = false;
+          "
+          style="border-radius: 10px"
+          type="warning"
+          >关闭</el-button
+        >
+      </div>
+    </template>
+  </el-dialog>
 </template>
 <script>
 import common from "../common/Config";
@@ -561,6 +594,7 @@ import { FitAddon } from "xterm-addon-fit";
 export default {
   data() {
     return {
+      history_dialog:false,
       log_dialog: false,
       termal_dialog: false,
       disabled_upload: false,
@@ -958,9 +992,9 @@ export default {
         "?pod_name=" +
         row.metadata.name +
         "&container_name=" +
-        this.containerName +
+        row.spec.containers[0].name +
         "&namespace=" +
-        this.namespaceValue +
+        row.metadata.namespace +
         "&bashType=" +
         "/bin/" +
         this.bashType;
