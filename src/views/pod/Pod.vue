@@ -192,7 +192,10 @@
                             </svg>
                           </el-dropdown-item>
                           <el-dropdown-item
-                          @click="log_dialog=true;initGetLogSocket(scope.row)"
+                            @click="
+                              log_dialog = true;
+                              initGetLogSocket(scope.row);
+                            "
                             >查看日志
                             <svg
                               style="margin-left: 14px"
@@ -245,31 +248,6 @@
                                 d="M422.6 294.6l57.4-57.4v402.7c0 17.6 14.4 32 32 32s32-14.4 32-32V237.2l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-6.2 6.2-9.4 14.4-9.4 22.6 0 8.2 3.1 16.4 9.4 22.6 12.5 12.6 32.7 12.6 45.2 0.1z"
                                 fill="#1875F0"
                                 p-id="27888"
-                              ></path>
-                            </svg>
-                          </el-dropdown-item>
-                          <el-dropdown-item
-                            >下载文件
-                            <svg
-                              style="margin-left: 14px"
-                              t="1703494375498"
-                              class="podicon"
-                              viewBox="0 0 1024 1024"
-                              version="1.1"
-                              xmlns="http://www.w3.org/2000/svg"
-                              p-id="26900"
-                              width="200"
-                              height="200"
-                            >
-                              <path
-                                d="M896 576c-17.7 0-32 14.3-32 32v137.8c0 22.9-9 44.5-25.3 60.8s-38 25.4-60.9 25.4H246.2c-22.9 0-44.5-9-60.8-25.3-16.4-16.4-25.4-38-25.4-60.9V608c0-17.7-14.3-32-32-32s-32 14.3-32 32v137.8C96 828.6 163.4 896 246.2 896h531.7c82.8 0 150.2-67.4 150.2-150.2V608c-0.1-17.7-14.4-32-32.1-32z"
-                                fill="#1875F0"
-                                p-id="26901"
-                              ></path>
-                              <path
-                                d="M489.4 662.6c12.5 12.5 32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L544 562.7V160c0-17.6-14.4-32-32-32s-32 14.4-32 32v402.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0-6.2 6.2-9.4 14.4-9.4 22.6s3.1 16.4 9.4 22.6l112.1 112.1z"
-                                fill="#1875F0"
-                                p-id="26902"
                               ></path>
                             </svg>
                           </el-dropdown-item>
@@ -340,43 +318,44 @@
         <el-col :span="12"> <span> 选择容器 </span></el-col>
         <el-col :span="12"> 选择文件 </el-col>
         <el-col :span="12">
-          <div style="padding-top: 15px">
-            <span>容器名</span>
-            <div>
-              <el-select
-                v-model="podinfo.containerName"
-                placeholder="请选择容器"
-                @blur="getContainerpath()"
-              >
-                <el-option
-                  v-for="(v, i) in containerList"
-                  :key="i"
-                  :label="v"
-                  :value="v"
-                />
-              </el-select>
+          <el-card shadow="never">
+            <div style="padding-top: 5px">
+              <span>容器名</span>
+              <div>
+                <el-select
+                  v-model="podinfo.containerName"
+                  placeholder="请选择容器"
+                  @blur="getContainerpath('/')"
+                >
+                  <el-option
+                    v-for="(v, i) in containerList"
+                    :key="i"
+                    :label="v"
+                    :value="v"
+                  />
+                </el-select>
+              </div>
             </div>
-          </div>
-          <div style="padding-top: 20px">
-            <span>路径</span>
-            <div>
-              <el-select v-model="podinfo.path" placeholder="请选择路径">
-                <el-option
-                  v-for="(v, i) in paths"
-                  :key="i"
-                  :label="v"
-                  :value="v"
-                />
-              </el-select>
+            <div style="margin-top: 35px">
+              <span>路径</span>
+              <div>
+                <el-select v-model="podinfo.path" placeholder="请选择路径">
+                  <el-option
+                    v-for="(v, i) in paths"
+                    :key="i"
+                    :label="v"
+                    :value="v"
+                  />
+                </el-select>
+              </div>
             </div>
-          </div>
+          </el-card>
         </el-col>
         <el-col :span="12">
           <div>
             <el-upload
               ref="uploadRef"
               v-model:file-list="uploadFiles"
-              class="upload-demo"
               drag
               :action="uploadUri"
               multiple
@@ -473,8 +452,14 @@
       </div>
     </div>
     <template #footer>
-      <div style="text-align: center;">
-        <span  @click="history_dialog = true;jindustatus=false" style="cursor: pointer;color: rgb(63, 111, 245);font-size: 13px;">
+      <div style="text-align: center">
+        <span
+          @click="
+            history_dialog = true;
+            jindustatus = false;
+          "
+          style="cursor: pointer; color: rgb(63, 111, 245); font-size: 13px"
+        >
           <!-- <el-button @click="jindustatus = false">Cancel</el-button>
         <el-button type="primary" @click="jindustatus = false">
           Confirm
@@ -495,7 +480,7 @@
       margin-left: 15%;
       margin-top: 50px;
     "
-    :before-close="xxx"
+    :before-close="terminalClose"
     :close-on-click-modal="false"
     :draggable="true"
   >
@@ -504,15 +489,46 @@
     </div>
     <template #footer>
       <div style="text-align: center">
-        <el-button
-          @click="
-            termal_dialog = false;
-            closeSocket();
-          "
-          style="border-radius: 10px"
-          type="warning"
-          >关闭</el-button
-        >
+        <el-row :gutter="10">
+          <el-col :span="12" style="text-align: right">
+            <el-button
+              @click="
+                termal_dialog = false;
+                closeSocket();
+              "
+              style="border-radius: 10px"
+              type="warning"
+              >关闭</el-button
+            >
+          </el-col>
+          <el-col :span="12" style="text-align: left; padding-top: 7px">
+            <svg
+              @click="download_dialog = true"
+              style="margin-left: 14px"
+              t="1703494375498"
+              class="podicon"
+              viewBox="0 0 1024 1024"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              p-id="26900"
+              width="200"
+              height="200"
+            >
+              <path
+                d="M896 576c-17.7 0-32 14.3-32 32v137.8c0 22.9-9 44.5-25.3 60.8s-38 25.4-60.9 25.4H246.2c-22.9 0-44.5-9-60.8-25.3-16.4-16.4-25.4-38-25.4-60.9V608c0-17.7-14.3-32-32-32s-32 14.3-32 32v137.8C96 828.6 163.4 896 246.2 896h531.7c82.8 0 150.2-67.4 150.2-150.2V608c-0.1-17.7-14.4-32-32.1-32z"
+                fill="#1875F0"
+                p-id="26901"
+              ></path>
+              <path
+                d="M489.4 662.6c12.5 12.5 32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L544 562.7V160c0-17.6-14.4-32-32-32s-32 14.4-32 32v402.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0-6.2 6.2-9.4 14.4-9.4 22.6s3.1 16.4 9.4 22.6l112.1 112.1z"
+                fill="#1875F0"
+                p-id="26902"
+              ></path>
+            </svg>
+          </el-col>
+        </el-row>
+
+        <!-- <el-button @click="download_dialog = true"> 下载文件 </el-button> -->
       </div>
     </template>
   </el-dialog>
@@ -548,6 +564,7 @@
       </div>
     </template>
   </el-dialog>
+  <!-- 上传记录 -->
   <el-dialog
     v-model="history_dialog"
     title="上传历史记录"
@@ -568,12 +585,62 @@
     <template #footer>
       <div style="text-align: center">
         <el-button
+          @click="history_dialog = false"
+          style="border-radius: 10px"
+          type="warning"
+          >关闭</el-button
+        >
+      </div>
+    </template>
+  </el-dialog>
+  <!-- 下载文件 -->
+  <el-dialog
+    v-model="download_dialog"
+    title="下载文件"
+    width="25%"
+    style="
+      height: 240px;
+      border-radius: 15px;
+      margin-left: 42%;
+      margin-top: 350px;
+    "
+    :before-close="downloadClose"
+    :close-on-click-modal="false"
+    :draggable="true"
+  >
+    <div>
+      <div>
+        <el-input
+          placeholder="请输入文件完整路径,例如：/tmp/a.txt"
+          v-model="file_path"
+          @input="file_path != '' ? (fileEmpty = false) : _"
+          @blur="file_path == '' ? (fileEmpty = true) : _"
+        >
+        </el-input>
+        <span style="color: rgb(109, 110, 109); font-size: 12px"
+          >注意：如果下载的文件过大(>500M+)，则响应时间会变长，请耐心等待。。。</span
+        ><br />
+        <span v-if="fileEmpty" style="color: red; font-size: 12px"
+          >文件路径不能为空</span
+        >
+      </div>
+    </div>
+    <template #footer>
+      <div style="text-align: center">
+        <el-button
           @click="
-            history_dialog = false;
+            download_dialog = false;
+            fileEmpty = false;
           "
           style="border-radius: 10px"
           type="warning"
           >关闭</el-button
+        >
+        <el-button
+          @click="file_path == '' ? (fileEmpty = true) : downloadFile()"
+          type="primary"
+          style="border-radius: 10px"
+          >立即下载</el-button
         >
       </div>
     </template>
@@ -584,17 +651,26 @@ import common from "../common/Config";
 //引入Xtem终端依赖
 // 引入css和js是为了该组件的外观展示
 import { getNamespacesReq } from "@/api/namespace/namespace";
-import { getContainerPath, getContainersReq, getPodsReq } from "@/api/pod/pod";
+import {
+  getContainerPath,
+  getContainersReq,
+  getPodsReq,
+  downloadFile,
+} from "@/api/pod/pod";
 import "xterm/css/xterm.css";
 import "xterm/lib/xterm.js";
 //引入Xtem终端依赖
 import { Terminal } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
+import Cookies from "js-cookie";
 
 export default {
   data() {
     return {
-      history_dialog:false,
+      fileEmpty: false,
+      file_path: "",
+      download_dialog: false,
+      history_dialog: false,
       log_dialog: false,
       termal_dialog: false,
       disabled_upload: false,
@@ -716,10 +792,65 @@ export default {
       beforBytes: 0,
       newBytes: 0,
       uoloadFileProgress: [],
-      logfitAddon:null,
+      logfitAddon: null,
+      treeLabel: "",
     };
   },
   methods: {
+    downloadClose() {
+      this.download_dialog = false;
+      this.fileEmpty = false;
+      this.file_path = "";
+    },
+    downloadFile() {
+      this.download_dialog = false;
+      console.log("开始下载：", this.file_path);
+      this.$message.success({
+        message: "开始下载，请稍后。。。",
+      });
+      this.podinfo.path = this.file_path;
+      // this.file_path = "";
+      console.log("podinfo", this.podinfo);
+      let filename = this.podinfo.path.split("/").pop();
+      if (filename.includes(".")) {
+        filename = filename.split(".")[0];
+      }
+      // 发起下载文件请求
+      downloadFile(this.podinfo)
+        .then((response) => {
+          // 创建下载链接
+          const url = window.URL.createObjectURL(
+            new Blob([response], { type: "application/octet-stream" })
+          );
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = filename + ".tar";
+
+          document.body.appendChild(link);
+
+          // 模拟点击下载链接
+          link.click();
+
+          // 清理资源
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(link);
+        })
+        .catch(() => {
+          console.error(
+            "下载文件失败：由于文件不存在或是其他原因导致，请稍后重试"
+          );
+          this.$message.error({
+            // message: "下载失败，请检查是否文件过大或资源不足导致",
+            message: "下载文件失败：由于文件不存在或是其他原因导致，请稍后重试",
+          });
+        });
+      // this.fileEmpty=false
+      this.downloadClose();
+    },
+    terminalClose() {
+      this.termal_dialog = false;
+      this.closeSocket();
+    },
     dia_close() {
       //恢复上传
       this.disabled_upload = false;
@@ -734,6 +865,7 @@ export default {
     //初始化数据
     resetData() {
       console.log("开始清除。。。");
+      this.treeData = [];
       this.uploadUri = "http://127.0.0.1:8081/api/upload";
       this.uploadFiles = [];
       this.paths = [];
@@ -776,16 +908,27 @@ export default {
       }
     },
     //获取容器所有路径
-    getContainerpath() {
+    getContainerpath(path) {
+      this.podinfo.path = path;
       console.log("qqqqqqqqqqqqqqqqqqqqq", this.podinfo);
       this.paths = [];
       getContainerPath(this.podinfo)
         .then((res) => {
           console.log("获取路径为：", res.data);
           let arr = res.data.split("\n");
+          let arr2 = [];
           for (let i in arr) {
-            console.log("路径：", arr[i]);
-            this.paths.push("/" + arr[i]);
+            //将arr[i]也就是每一行以一个或多个空格分隔返回一个新数组
+            arr2 = arr[i].split(/\s+/);
+            //判断每一行的第一段是否以d为开头，如果是则说明是目录
+            if (path == "/") {
+              if (arr2[0].startsWith("d")) {
+                console.log("目录为：", arr2[8]);
+                this.paths.push("/" + arr2[8]);
+              }
+            } else {
+              this.paths.push(arr2[8]);
+            }
           }
         })
         .catch((res) => {
@@ -904,7 +1047,6 @@ export default {
     },
     //实际上传文件方法
     handleSubmit() {
-      console.log("开始上传卡拉");
       this.submitUri();
       console.log("url=", this.uploadUri);
       // 在这里编写提交动作的代码
@@ -921,7 +1063,9 @@ export default {
         //提交表单上传文件组
         this.$refs.uploadRef.submit();
       } else {
-        alert("文件数量不能超过5个或小于1个");
+        this.$message.info({
+          message: "文件数量不能超过5个或小于1个",
+        });
         //恢复上传功能
         this.disabled_upload = false;
         this.resetData();
@@ -986,15 +1130,19 @@ export default {
     },
     //初始化终端用的websocket
     initSocket(row) {
+      this.podinfo.podName = row.metadata.name;
+      this.podinfo.namespace = row.metadata.namespace;
+      this.podinfo.containerName = row.spec.containers[0].name;
+
       //定义websocket连接地址
       let terminalWsUrl =
         common.k8sTerminalWs +
         "?pod_name=" +
-        row.metadata.name +
+        this.podinfo.podName +
         "&container_name=" +
-        row.spec.containers[0].name +
+        this.podinfo.containerName +
         "&namespace=" +
-        row.metadata.namespace +
+        this.podinfo.namespace +
         "&bashType=" +
         "/bin/" +
         this.bashType;
@@ -1045,6 +1193,7 @@ export default {
     },
     //关闭socket连接
     closeSocket() {
+      this.resetData();
       if (this.socket == null) {
         return;
       }
@@ -1089,7 +1238,7 @@ export default {
       //绑定dom(也就是绑定div)
       this.logTerm.open(document.getElementById("logger"));
       //调整适应父元素大小
-       this.logfitAddon = new FitAddon();
+      this.logfitAddon = new FitAddon();
       // this.logTerm.loadAddon(fitAddon);
       this.logfitAddon.activate(this.logTerm); //用activate加载方式就可以正常卸载插件和dispose
       this.logfitAddon.fit();
@@ -1098,7 +1247,7 @@ export default {
     },
     //初始化获取日志socket
     initGetLogSocket(row) {
-      console.log("准备：", row)
+      console.log("准备：", row);
       let getlogWsUrl =
         common.K8sGetLogs +
         "?container=" +

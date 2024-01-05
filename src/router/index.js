@@ -7,7 +7,13 @@ import Layout from "@/layout/layout.vue";
 const routes = [
   {
     path: "/",
-    redirect: "/home", // 设置默认重定向到login页面
+    redirect: "/login", // 设置默认重定向到login页面
+  },
+  {
+    path: "/login", //视图
+    icon: "el-icon-unlock", //图标
+    meta: { title: "login", requireAuth: true }, //定义meta元数据
+    component: () => import("@/views/login/login.vue"), //视图组件
   },
   {
     path: "/home",

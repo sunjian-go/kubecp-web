@@ -49,4 +49,12 @@ export function getContainerPath(getContainerPathData) {
     params: getContainerPathData,
   });
 }
-
+export function downloadFile(downloadFileData) {
+  return httpClient({
+    method: "post",
+    url: "/download",
+    responseType: 'blob', // 重要，因为我们期望的是一个二进制文件
+    data: downloadFileData,
+    timeout: 300000,
+  });
+}
